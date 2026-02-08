@@ -24,7 +24,7 @@ class MacroDetector:
         self.seq_len = self.cfg.get("seq_len", 50)
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
 
-        self.allowable_add_data = self.seq_len
+        self.allowable_add_data = self.seq_len + 25
         self.CLIP_BOUNDS:dict = self.cfg["CLIP_BOUNDS"]
         self.features = list(self.CLIP_BOUNDS.keys())
         self.input_size = len(self.features)
