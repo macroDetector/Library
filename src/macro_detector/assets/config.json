@@ -1,10 +1,10 @@
 {
-    "SEQ_LEN": 50,
-    "STRIDE": 15,
+    "SEQ_LEN": 70,
+    "STRIDE": 30,
     "JsonPath": "./",
     "Recorder": "json",
-    "threshold": 0.3081285357475281,
-    "d_model": 512,
+    "threshold": 0.030567800626158714,
+    "d_model": 128,
     "num_layers": 4,
     "dropout": 0.3,
     "batch_size": 256,
@@ -14,50 +14,8 @@
     "epoch": 200,
     "patience": 10,
     "weight_decay": 0.0001,
-    "dim_feedforward": 2048,
+    "dim_feedforward": 512,
     "weight_threshold": 1.0,
-    "CLIP_BOUNDS": {
-        "speed": {
-            "min": -0.4818606264370457,
-            "max": 4.694800992062587
-        },
-        "acc": {
-            "min": -3.392577223881916,
-            "max": 3.400073304099615
-        },
-        "log_jerk": {
-            "min": -1.4435389209653848,
-            "max": 1.1066317248960682
-        },
-        "angular_speed": {
-            "min": -3.0466520494446696,
-            "max": 3.0554410782027337
-        },
-        "angular_acc": {
-            "min": -3.6213245490834525,
-            "max": 3.4087540646264216
-        },
-        "log_curvature": {
-            "min": -0.626519805184535,
-            "max": 3.629933438732509
-        },
-        "energy": {
-            "min": -0.1863859345106172,
-            "max": 3.8671602856229264
-        },
-        "speed_diff": {
-            "min": -3.381286600446168,
-            "max": 3.367182531522398
-        },
-        "v_std": {
-            "min": -0.5340825448977049,
-            "max": 4.41660295464076
-        },
-        "dt_v_std": {
-            "min": -0.03409441396058648,
-            "max": 0.28597721695072914
-        }
-    },
     "improvement_val_loss_cut": 0.95,
-    "chunk_size": 500
+    "chunk_size": 30
 }
