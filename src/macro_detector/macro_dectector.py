@@ -21,10 +21,11 @@ DEFAULT_SCALER_PATH = os.path.join(BASE_DIR, "assets", "scaler.pkl")
 
 
 FEATURES = [
-    "micro_shake",
     "speed",
     "acc",
-    "jerk"
+    "jerk",
+    "micro_shake",
+    "curvature"
 ]
 
 class MacroDetector:
@@ -42,7 +43,7 @@ class MacroDetector:
 
         self.allowable_add_data = self.seq_len + self.chunk_size + 5
 
-        self.input_size = len(FEATURES) * 6
+        self.input_size = len(FEATURES) * 4
         self.weight_threshold = self.cfg["weight_threshold"]
 
         self.base_threshold = self.cfg['threshold']
