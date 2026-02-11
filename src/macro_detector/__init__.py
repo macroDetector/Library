@@ -9,12 +9,12 @@ CONFIG_PATH = os.path.join(BASE_DIR, "assets", "config.json")
 _detector = MacroDetector(config_path=CONFIG_PATH)
 
 def get_macro_result(receive_data_list: List[MousePoint]):
-    print(f"version 0.0.1")
+    print(f"version 0.0.2")
     print(f"송신받은 데이터 개수 {len(receive_data_list)}")
     try:
         all_data = []
         result = {}        
-        if len(receive_data_list) < 51:
+        if len(receive_data_list) < _detector.allowable_add_data:
             return {
                 "status": "1",
                 "message": f"데이터가 부족합니다. 현재 {len(receive_data_list)}개 보냈습니다. 최소 51개 이상 넣어주세요.",

@@ -3,39 +3,43 @@ import numpy as np
 
 def indicators_generation(df_chunk: pd.DataFrame) -> pd.DataFrame:
     df = df_chunk.copy()
-    
-    dt = df["deltatime"]
+    eps = 1e-9
+    dt = df["deltatime"].replace(0, eps)
 
+    # 1. 이동 기본량
     df["dx"] = df["x"].diff()
     df["dy"] = df["y"].diff()
     df["dist"] = np.hypot(df["dx"], df["dy"])
 
+    # 2. 물리적 지표
     df["speed"] = df["dist"] / dt
-
     df["acc"] = df["speed"].diff() / dt
-
     df["jerk"] = df["acc"].diff() / dt
+    
+    # [추가] jerk_diff: 저크의 변화량 (Snap)
+    df["jerk_diff"] = df["jerk"].diff() / dt
 
+    # 3. 방향성 및 회전
     df["theta"] = np.arctan2(df["dy"], df["dx"])
+    df["angle_vel"] = df["theta"].diff().pipe(lambda x: np.arctan2(np.sin(x), np.cos(x))) / dt
 
-    df["x0"] = df["x"]
-    df["x1"] = df["x"].shift(5)
-    df["x2"] = df["x"].shift(10)
+    # 4. Micro-shake
+    df["micro_shake"] = (df["speed"].diff().abs() + df["angle_vel"].diff().abs())
 
-    df["y0"] = df['y']
-    df['y1'] = df['y'].shift(5)
-    df['y2'] = df['y'].shift(10)
-
-    df["micro_shake"] = (df["dx"].diff().abs() + df["dy"].diff().abs())
-                                 
-    a = np.hypot(df["x1"] - df["x2"], df["y1"] - df["y2"])
-    b = np.hypot(df["x0"] - df["x1"], df["y0"] - df["y1"])
-    c = np.hypot(df["x0"] - df["x2"], df["y0"] - df["y2"])
+    # 5. Curvature
+    x1, y1 = df["x"].shift(1), df["y"].shift(1)
+    x2, y2 = df["x"].shift(2), df["y"].shift(2)
+    a = np.hypot(x1 - x2, y1 - y2)
+    b = np.hypot(df["x"] - x1, df["y"] - y1)
+    c = np.hypot(df["x"] - x2, df["y"] - y2)
     s = (a + b + c) / 2
     area = np.sqrt(np.maximum(0, s * (s - a) * (s - b) * (s - c)))
-    denominator = a * b * c
-    df["curvature"] = np.where(denominator > 1e-9, (4 * area) / denominator, 0)
+    df["curvature"] = np.where(a*b*c > eps, (4 * area) / (a * b * c + eps), 0)
 
+    # 6. 비선형성 (energy_impact)
+    df["energy_impact"] = df["acc"] * df["jerk"]
+    
+    # 결측치 처리
     df = df.replace([np.inf, -np.inf], np.nan).fillna(0)
 
     return df

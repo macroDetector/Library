@@ -16,7 +16,7 @@ from macro_detector.make_gauss import make_gauss
 from macro_detector.loss_caculation import Loss_Calculation
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DEFAULT_MODEL_PATH = os.path.join(BASE_DIR, "assets", "mouse_macro_lstm_best.pt")
+DEFAULT_MODEL_PATH = os.path.join(BASE_DIR, "assets", "model.pt")
 DEFAULT_SCALER_PATH = os.path.join(BASE_DIR, "assets", "scaler.pkl")
 
 
@@ -25,7 +25,11 @@ FEATURES = [
     "acc",
     "jerk",
     "micro_shake",
-    "curvature"
+    "curvature",
+    # --- 추가 추천 피처 ---
+    "angle_vel",     # 방향 전환의 부드러움 측정 (각속도)
+    "energy_impact", # acc * jerk (물리적 일관성 파괴용)
+    "jerk_diff"      # 저크의 변화량 (가속도의 가속도의 가속도)
 ]
 
 class MacroDetector:
@@ -41,7 +45,7 @@ class MacroDetector:
         self.tolerance = self.cfg.get("tolerance", 0.02)
         self.chunk_size = self.cfg.get("chunk_size", 50)
 
-        self.allowable_add_data = self.seq_len + self.chunk_size + 5
+        self.allowable_add_data = self.seq_len + self.chunk_size + 30
 
         self.input_size = len(FEATURES) * 4
         self.weight_threshold = self.cfg["weight_threshold"]

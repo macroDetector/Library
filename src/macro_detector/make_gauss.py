@@ -47,12 +47,10 @@ def make_gauss(data: pd.DataFrame, chunk_size: int, chunk_stride: int, offset: i
         roughness = np.mean(np.abs(diff_1), axis=0)
 
         input_feature = [
-            # m,              # 평균
-            # s,              # 표준편차
-            sk,             # 왜도
-            actual_entropy, # 실측 엔트로피
-            entropy_gap,    # 가우시안과의 괴리율
-            roughness       # 거칠기
+            sk,                 # 왜도 (분포의 찌그러짐)
+            actual_entropy,     # 실측 엔트로피 (무질서도)
+            entropy_gap,        # 가우시안과의 괴리 (인위성)
+            roughness,          # 거칠기 (미세 진동)
         ]
         
         chunks.append(np.concatenate(input_feature))
