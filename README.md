@@ -3,11 +3,15 @@ This library is based on the [Original Project Name](https://github.com/qqqqaqaq
 - Original Model: Transformer based Autoencoder
 - Changes: Refactored for library use, added preprocessing scripts, etc.
 
+## install
 pip install git+https://github.com/qqqqaqaqaqq/mouseMacroLibrary.git
+
+## uninstall
+pip uninstall mytorchlib
 
 ---
 
-# python
+## python
 ```
 import macro_detector
 
@@ -30,7 +34,7 @@ print(f"결과: {result}")
 
 --- 
 
-# fastapi
+## fastapi
 ```
 from fastapi import APIRouter
 from typing import List
