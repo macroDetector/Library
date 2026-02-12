@@ -51,7 +51,7 @@ class Circle_Trajectory:
         self.detector = MacroDetector(cfg=CONFIG_PATH, model=self.model, scaler=self.scaler, FEATURES=FEATURES, device=self.device)        
 
     def get_macro_result(self, receive_data_list: List[MousePoint]):
-        print(f"version 0.0.6")
+        print(f"version 0.0.1")
         print(f"송신받은 데이터 개수 {len(receive_data_list)}")
         try:
             all_data = []
@@ -59,7 +59,7 @@ class Circle_Trajectory:
             if len(receive_data_list) < self.detector.allowable_add_data:
                 return {
                     "status": "1",
-                    "message": f"데이터가 부족합니다. 현재 {len(receive_data_list)}개 보냈습니다. 최소 51개 이상 넣어주세요.",
+                    "message": f"데이터가 부족합니다. 현재 {len(receive_data_list)}개 보냈습니다. 최소 {self.detector.allowable_add_data}개 이상 넣어주세요.",
                     "hint": {}
                 }
             
