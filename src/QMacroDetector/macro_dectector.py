@@ -8,12 +8,12 @@ import json
 
 from sklearn.preprocessing import RobustScaler
 
-from macro_detector.TransformerMacroDetector import TransformerMacroAutoencoder
-from macro_detector.indicators import indicators_generation
+from QMacroDetector.TransformerMacroDetector import TransformerMacroAutoencoder
+from QMacroDetector.indicators import indicators_generation
 
-from macro_detector.make_sequence import make_seq
-from macro_detector.make_gauss import make_gauss
-from macro_detector.loss_caculation import Loss_Calculation
+from QMacroDetector.make_sequence import make_seq
+from QMacroDetector.make_gauss import make_gauss
+from QMacroDetector.loss_caculation import Loss_Calculation
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_MODEL_PATH = os.path.join(BASE_DIR, "assets", "model.pt")

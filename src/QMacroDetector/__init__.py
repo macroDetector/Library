@@ -1,6 +1,6 @@
 import os
-from macro_detector.macro_dectector import MacroDetector
-from macro_detector.MousePoint import MousePoint
+from QMacroDetector.macro_dectector import MacroDetector
+from QMacroDetector.MousePoint import MousePoint
 from typing import List
 
 import torch
@@ -8,7 +8,7 @@ import joblib
 import json
 
 from sklearn.preprocessing import RobustScaler
-from macro_detector.TransformerMacroDetector import TransformerMacroAutoencoder
+from QMacroDetector.TransformerMacroDetector import TransformerMacroAutoencoder
 
 class Circle_Trajectory:
     def __init__(self):

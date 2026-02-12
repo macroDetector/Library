@@ -7,7 +7,7 @@ This library is based on the [Original Project Name](https://github.com/qqqqaqaq
 pip install git+https://github.com/qqqqaqaqaqq/mouseMacroLibrary.git
 
 ## uninstall
-pip uninstall mytorchlib
+pip uninstall QMacroDetector
 
 ---
 
@@ -20,7 +20,7 @@ Circle_Trajectory : 보안용 원형 궤적 마우스 움직임
 
 # python
 ```
-from macro_detector import Circle_Trajectory, MousePoint
+from QMacroDetector import Circle_Trajectory, MousePoint
 
 sample_data = {
     'x': 100, # int
@@ -40,7 +40,7 @@ print(f"결과: {result}")
 ```
 from fastapi import APIRouter
 from typing import List
-from macro_detector import Circle_Trajectory, MousePoint
+from QMacroDetector import Circle_Trajectory, MousePoint
 
 router = APIRouter()
 
