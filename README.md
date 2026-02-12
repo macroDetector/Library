@@ -34,7 +34,7 @@ print(f"결과: {result}")
 ```
 from fastapi import APIRouter
 from typing import List
-from macro_detector import get_macro_result, MousePoint
+from macro_detector import Circle_Trajectory, MousePoint
 
 router = APIRouter()
 
@@ -48,7 +48,7 @@ router = APIRouter()
 async def get_mouse_pointer(data: List[MousePoint]):
 
     print(len(data))
-    result = get_macro_result(data)
+    result = Circle_Trajectory.get_macro_result(data)
 
     if result:
         print(result)
