@@ -12,7 +12,7 @@ from QMacroDetector.TransformerMacroDetector import TransformerMacroAutoencoder
 
 class Pattern_Game:
     def __init__(self):
-        print(f"version 0.0.3")        
+        print(f"version 0.0.4")        
         BASE_DIR = os.path.dirname(os.path.abspath(__file__))
         CONFIG_PATH = os.path.join(BASE_DIR, "assets", "pattern_game", "config.json")
         DEFAULT_MODEL_PATH = os.path.join(BASE_DIR, "assets", "pattern_game", "model.pt")

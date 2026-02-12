@@ -19,7 +19,7 @@ class MacroDetector:
         self.tolerance = self.cfg.get("tolerance", 0.02)
         self.chunk_size = self.cfg.get("chunk_size", 50)
 
-        self.allowable_add_data = self.seq_len + self.chunk_size + 30
+        self.allowable_add_data = self.seq_len + self.chunk_size + 10 # offset 수준
 
         self.FEATURES = FEATURES
 
