@@ -12,6 +12,7 @@ from QMacroDetector.TransformerMacroDetector import TransformerMacroAutoencoder
 
 class Circle_Trajectory:
     def __init__(self):
+        print(f"version 0.0.2")        
         BASE_DIR = os.path.dirname(os.path.abspath(__file__))
         CONFIG_PATH = os.path.join(BASE_DIR, "assets", "security_circle_trajectory_model", "config.json")
         DEFAULT_MODEL_PATH = os.path.join(BASE_DIR, "assets", "security_circle_trajectory_model", "model.pt")
@@ -48,10 +49,9 @@ class Circle_Trajectory:
         self.model.eval()
         self.scaler:RobustScaler = joblib.load(DEFAULT_SCALER_PATH)
 
-        self.detector = MacroDetector(cfg=CONFIG_PATH, model=self.model, scaler=self.scaler, FEATURES=FEATURES, device=self.device)        
+        self.detector = MacroDetector(cfg=self.cfg, model=self.model, scaler=self.scaler, FEATURES=FEATURES, device=self.device)        
 
     def get_macro_result(self, receive_data_list: List[MousePoint]):
-        print(f"version 0.0.1")
         print(f"송신받은 데이터 개수 {len(receive_data_list)}")
         try:
             all_data = []
