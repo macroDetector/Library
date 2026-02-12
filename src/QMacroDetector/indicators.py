@@ -27,17 +27,19 @@ def indicators_generation(df_chunk: pd.DataFrame) -> pd.DataFrame:
     df["micro_shake"] = (df["speed"].diff().abs() + df["angle_vel"].diff().abs())
 
     # 5. Curvature
-    x1, y1 = df["x"].shift(1), df["y"].shift(1)
-    x2, y2 = df["x"].shift(2), df["y"].shift(2)
+    x1, y1 = df["x"].shift(3), df["y"].shift(6)
+    x2, y2 = df["x"].shift(3), df["y"].shift(6)
     a = np.hypot(x1 - x2, y1 - y2)
     b = np.hypot(df["x"] - x1, df["y"] - y1)
     c = np.hypot(df["x"] - x2, df["y"] - y2)
     s = (a + b + c) / 2
     area = np.sqrt(np.maximum(0, s * (s - a) * (s - b) * (s - c)))
     df["curvature"] = np.where(a*b*c > eps, (4 * area) / (a * b * c + eps), 0)
+    df["curvature_diff"] = df["curvature"].diff().abs()
 
     # 6. 비선형성 (energy_impact)
     df["energy_impact"] = df["acc"] * df["jerk"]
+    df["low_speed_const_acc"] = np.where(df["speed"] < 1.0, df["acc"].rolling(5).std(), 1.0)
     
     # 결측치 처리
     df = df.replace([np.inf, -np.inf], np.nan).fillna(0)

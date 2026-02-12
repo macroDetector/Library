@@ -11,16 +11,15 @@ pip uninstall QMacroDetector
 
 ---
 
----
-
 ## Class
-Circle_Trajectory : 보안용 원형 궤적 마우스 움직임
+Pattern_Game : 보안용 마우스 좌표 측정 매크로 탐지
+![Pattern_Game](./public/pattern_game.png)
 
 --- 
 
-# python
+## python
 ```
-from QMacroDetector import Circle_Trajectory, MousePoint
+from QMacroDetector import Pattern_Game, MousePoint
 
 sample_data = {
     'x': 100, # int
@@ -29,62 +28,20 @@ sample_data = {
     'deltatime': 0.01 # float
 }
 
-# 실행 테스트
-result = Circle_Trajectory().get_macro_result(sample_data)
+result = Pattern_Game().get_macro_result(sample_data)
 
-# 결과 출력 (초반 SEQ_LEN개까지는 데이터 쌓는 중이라 None이 나옵니다)
 print(f"결과: {result}")
 ```
 
-## fastapi
 ```
-from fastapi import APIRouter
-from typing import List
-from QMacroDetector import Circle_Trajectory, MousePoint
-
-router = APIRouter()
-
-# class MousePoint(BaseModel):
-#     timestamp: datetime
-#     x: int
-#     y: int
-#     deltatime: float
-
-@router.post("/get_points")
-async def get_mouse_pointer(data: List[MousePoint]):
-
-    print(len(data))
-    result = Circle_Trajectory.get_macro_result(data)
-
-    if result:
-        print(result)
-    
-    return {"status": "collecting", "buffer_count": "데이터 축적 중..."}
-```
-```
-100
+# fail
 {
-    'status': '0', 
-    'data': [
-        {'raw_error': 0.01729, 'threshold': 0.054254673421382904, 'is_macro': np.False_}, 
-        {'raw_error': 0.01732, 'threshold': 0.054254673421382904, 'is_macro': np.False_}, 
-        {'raw_error': 0.01729, 'threshold': 0.054254673421382904, 'is_macro': np.False_},
-        ...
-        ]
-}
-
-```
-
-## Return Code
-```
-# error
-return {
     "status": "1",
     "message": f"데이터가 부족합니다. 현재 {len(receive_data_list)}개 보냈습니다. 최소 51개 이상 넣어주세요.",
     "hint": {}
 }
 
-return {
+{
     "status": "1",
     "message": f"데이터 형식 오류입니다. 해당 데이터 형식으로 전달 해주세요.",
     "hint": {
@@ -101,9 +58,14 @@ return {
 }   
 
 # success
-result = {
-    "status": "0",
-    "data" : all_data
+{
+    'status': '0', 
+    'data': [
+        {'raw_error': 0.01729, 'threshold': 0.054254673421382904, 'is_macro': np.False_}, 
+        {'raw_error': 0.01732, 'threshold': 0.054254673421382904, 'is_macro': np.False_}, 
+        {'raw_error': 0.01729, 'threshold': 0.054254673421382904, 'is_macro': np.False_},
+        ...
+        ]
 }
 ```
 

@@ -21,18 +21,8 @@ class MacroDetector:
 
         self.allowable_add_data = self.seq_len + self.chunk_size + 30
 
-        self.FEATURES = [
-            "speed",
-            "acc",
-            "jerk",
-            "micro_shake",
-            "curvature",
-            "angle_vel",
-            "energy_impact", 
-            "jerk_diff"
-        ]
+        self.FEATURES = FEATURES
 
-        self.input_size = len(FEATURES) * 4
         self.weight_threshold = self.cfg["weight_threshold"]
 
         self.base_threshold = self.cfg['threshold']

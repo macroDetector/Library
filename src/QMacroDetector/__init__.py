@@ -10,13 +10,13 @@ import json
 from sklearn.preprocessing import RobustScaler
 from QMacroDetector.TransformerMacroDetector import TransformerMacroAutoencoder
 
-class Circle_Trajectory:
+class Pattern_Game:
     def __init__(self):
-        print(f"version 0.0.2")        
+        print(f"version 0.0.3")        
         BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-        CONFIG_PATH = os.path.join(BASE_DIR, "assets", "security_circle_trajectory_model", "config.json")
-        DEFAULT_MODEL_PATH = os.path.join(BASE_DIR, "assets", "security_circle_trajectory_model", "model.pt")
-        DEFAULT_SCALER_PATH = os.path.join(BASE_DIR, "assets", "security_circle_trajectory_model", "scaler.pkl")
+        CONFIG_PATH = os.path.join(BASE_DIR, "assets", "pattern_game_model", "config.json")
+        DEFAULT_MODEL_PATH = os.path.join(BASE_DIR, "assets", "pattern_game_model", "model.pt")
+        DEFAULT_SCALER_PATH = os.path.join(BASE_DIR, "assets", "pattern_game_model", "scaler.pkl")
 
         self.cfg:dict = {}
         with open(CONFIG_PATH, 'r') as f:
@@ -24,17 +24,14 @@ class Circle_Trajectory:
 
         FEATURES = [
             "speed",
-            "acc",
             "jerk",
             "micro_shake",
             "curvature",
             "angle_vel",
-            "energy_impact", 
-            "jerk_diff"
         ]
 
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
-        self.input_size = len(FEATURES) * 4
+        self.input_size = len(FEATURES) * 3
         # ===== 모델 초기화 =====
         self.model = TransformerMacroAutoencoder(
             input_size=self.input_size,
