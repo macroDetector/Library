@@ -74,7 +74,7 @@ class MacroDetector:
                 is_human = sample_errors <= self.base_threshold
 
 
-            _error = sample_errors / self.base_threshold * 100
+            _error = sample_errors / self.base_threshold
                     
             send_data.append({
                 "is_human": is_human,

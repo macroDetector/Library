@@ -84,27 +84,28 @@ class Pattern_Game:
         send_data = ResponseBody(**result)
 
         return send_data
-        
-    def get_macro_result_live(self, receive_data_list:MousePoint):
-        self.detector.buffer = deque(maxlen=10_000)
 
-        p_data = {
-            'timestamp': receive_data_list.timestamp,
-            'x': receive_data_list.x,
-            'y': receive_data_list.y,
-            'deltatime': receive_data_list.deltatime
-        }
+    # 개발 중        
+    # def get_macro_result_live(self, receive_data_list:MousePoint):
+    #     self.detector.buffer = deque(maxlen=10_000)
+
+    #     p_data = {
+    #         'timestamp': receive_data_list.timestamp,
+    #         'x': receive_data_list.x,
+    #         'y': receive_data_list.y,
+    #         'deltatime': receive_data_list.deltatime
+    #     }
     
-        self.detector.push(p_data)
+    #     self.detector.push(p_data)
 
-        try:
-            result = self.detector._infer()
-        except Exception:
-            pass
+    #     try:
+    #         result = self.detector._infer()
+    #     except Exception:
+    #         pass
         
-        if result.get("status") == "1":
-            return None
+    #     if result.get("status") == "1":
+    #         return None
 
-        send_data = ResponseBody(**result)
+    #     send_data = ResponseBody(**result)
 
-        return send_data
+    #     return send_data
