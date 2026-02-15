@@ -75,16 +75,9 @@ class MacroDetector:
 
                 sample_errors = Loss_Calculation(outputs=output, batch=last_seq).item()
 
-                # 임계치 판정 logic
-                is_human = sample_errors <= self.base_threshold
-
-
             _error = sample_errors / self.base_threshold
                     
-            send_data.append({
-                "is_human": is_human,
-                "error": _error, 
-            })
+            send_data.append(_error)
         
         # 안전하게 앞 50개 삭제
         send_data = send_data[50:]
