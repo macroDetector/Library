@@ -37,20 +37,24 @@ class MacroDetector:
     
         df = df[df["deltatime"] <= self.filter_tolerance].reset_index(drop=True)
         
-        df = indicators_generation(
-            df_chunk=df, 
-            chunk_size=self.chunk_size,
-            offset=int(self.chunk_size * 1.5)
-        )
+        offset = self.chunk_size + 10
 
-        if len(df) < self.seq_len:
+        total_len = (self.seq_len + self.chunk_size + offset) + 50
+
+        if len(df) < total_len:
             return {
                 "status": "1",
-                "message": f"데이터가 부족합니다. 현재 {len(df)}개 분석 가능한 데이터가 있습니다. 최소 {self.seq_len + self.chunk_size + int(self.chunk_size * 1.5)}개 이상 넣어주세요.",
+                "message": f"데이터가 부족합니다. 현재 {len(df)}개 분석 가능한 데이터가 있습니다. 최소 {total_len}개 이상 넣어주세요.",
                 "hint": "",
                 "data" : {}
             }
-                
+
+        df = indicators_generation(
+            df_chunk=df, 
+            chunk_size=self.chunk_size,
+            offset=offset
+        )
+        
         df_filter_chunk = df[self.FEATURES].copy()
                 
         chunks_scaled_array = self.scaler.transform(df_filter_chunk)
@@ -82,6 +86,9 @@ class MacroDetector:
                 "error_pct": _error, 
             })
         
+        # 안전하게 앞 50개 삭제
+        send_data = send_data[50:]
+
         return {
             "status": "0",
             "message": "success",
