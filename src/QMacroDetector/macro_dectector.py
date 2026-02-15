@@ -83,7 +83,7 @@ class MacroDetector:
                     
             send_data.append({
                 "is_human": is_human,
-                "error_pct": _error, 
+                "error": _error, 
             })
         
         # 안전하게 앞 50개 삭제
