@@ -1,4 +1,3 @@
-import time
 import numpy as np
 
 def make_seq(data:np.ndarray, seq_len:int, stride:int) -> np.array:

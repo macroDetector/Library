@@ -6,13 +6,14 @@ from typing import List
 import torch
 import joblib
 import json
+from collections import deque
 
 from sklearn.preprocessing import RobustScaler
 from QMacroDetector.TransformerMacroDetector import TransformerMacroAutoencoder
 
 class Pattern_Game:
     def __init__(self):
-        print(f"version 0.0.4")        
+        print(f"version 0.0.5")    
         BASE_DIR = os.path.dirname(os.path.abspath(__file__))
         CONFIG_PATH = os.path.join(BASE_DIR, "assets", "pattern_game", "config.json")
         DEFAULT_MODEL_PATH = os.path.join(BASE_DIR, "assets", "pattern_game", "model.pt")
@@ -22,16 +23,27 @@ class Pattern_Game:
         with open(CONFIG_PATH, 'r') as f:
             self.cfg:dict = json.load(f)
 
+
         FEATURES = [
-            "speed",
-            "jerk",
-            "micro_shake",
-            "curvature",
-            "angle_vel",
+            # 평균, 표준 편차 => 그래프 형상
+            "speed_mean", "speed_std", 
+            "acc_mean", "acc_std", 
+            "micro_shake_mean", "micro_shake_std", 
+            "angle_vel_mean", "angle_vel_std",
+            "straightness_mean", "straightness_std",
+
+            # 왜곡, 거칠기 => 그래프의 비대칭성 및 불규칙성
+            "speed_skew", "acc_skew", "micro_shake_skew", "angle_vel_skew",
+            "speed_rough", "acc_rough", "micro_shake_rough", "angle_vel_rough",
+            "straightness_skew", "straightness_rough",
+
+            # 기록기 검거 지표 (무질서도 및 고유값 비율)
+            "path_sinuosity", "bending_energy",
         ]
 
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
-        self.input_size = len(FEATURES) * 3
+        self.input_size = len(FEATURES)
+        
         # ===== 모델 초기화 =====
         self.model = TransformerMacroAutoencoder(
             input_size=self.input_size,
@@ -50,6 +62,9 @@ class Pattern_Game:
 
     def get_macro_result(self, receive_data_list: List[MousePoint]):
         print(f"송신받은 데이터 개수 {len(receive_data_list)}")
+
+        self.detector.buffer = deque(maxlen=int(len(receive_data_list)))
+
         try:
             all_data = []
             result = {}        
@@ -60,8 +75,6 @@ class Pattern_Game:
                     "hint": {}
                 }
             
-            inferenc_result = None
-
             for data in receive_data_list:
 
                 p_data = {
@@ -71,11 +84,9 @@ class Pattern_Game:
                     'deltatime': data.deltatime
                 }
                 
-                inferenc_result = self.detector.push(p_data)
+                self.detector.push(p_data)
 
-                if inferenc_result is not None:
-                    all_data.append(inferenc_result)
-
+            all_data = self.detector._infer()
 
             result = {
                 "status": "0",
