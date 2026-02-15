@@ -10,6 +10,7 @@ from collections import deque
 
 from sklearn.preprocessing import RobustScaler
 from QMacroDetector.TransformerMacroDetector import TransformerMacroAutoencoder
+from QMacroDetector.Response import ResponseBody
 
 class Pattern_Game:
     def __init__(self):
@@ -65,35 +66,45 @@ class Pattern_Game:
 
         self.detector.buffer = deque(maxlen=int(len(receive_data_list)))
 
+        for data in receive_data_list:
+            p_data = {
+                'timestamp': data.timestamp,
+                'x': data.x,
+                'y': data.y,
+                'deltatime': data.deltatime
+            }
+            
+            self.detector.push(p_data)
+
         try:
-            for data in receive_data_list:
-                p_data = {
-                    'timestamp': data.timestamp,
-                    'x': data.x,
-                    'y': data.y,
-                    'deltatime': data.deltatime
-                }
-                
-                self.detector.push(p_data)
-
             result = self.detector._infer()
-
+        finally:
             self.detector.buffer.clear()
 
-            return result
-        except Exception as e:
-            return {
-                "status": "1",
-                "message": f"데이터 형식 오류입니다. 해당 데이터 형식으로 전달 해주세요.",
-                "hint": {
-                    "example": [
-                        {
-                            "timestamp": "2026-02-08T20:48:29",
-                            "x": 100,
-                            "y": 200,
-                            "deltatime": 0.016
-                        }
-                    ],
-                    "description": "위와 같은 형식의 객체를 리스트에 담아 최소 51개 이상 POST 요청으로 보내야 분석이 시작됩니다."
-                }
-            }     
+        send_data = ResponseBody(**result)
+
+        return send_data
+        
+    def get_macro_result_live(self, receive_data_list:MousePoint):
+        self.detector.buffer = deque(maxlen=10_000)
+
+        p_data = {
+            'timestamp': receive_data_list.timestamp,
+            'x': receive_data_list.x,
+            'y': receive_data_list.y,
+            'deltatime': receive_data_list.deltatime
+        }
+    
+        self.detector.push(p_data)
+
+        try:
+            result = self.detector._infer()
+        except Exception:
+            pass
+        
+        if result.get("status") == "1":
+            return None
+
+        send_data = ResponseBody(**result)
+
+        return send_data
