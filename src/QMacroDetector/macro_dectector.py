@@ -46,7 +46,7 @@ class MacroDetector:
         if len(df) < self.seq_len:
             return {
                 "status": "1",
-                "message": f"데이터가 부족합니다. 현재 {len(chunks_scaled_df)}개 분석 가능한 데이터가 있습니다. 최소 {self.seq_len}개 이상 넣어주세요.",
+                "message": f"데이터가 부족합니다. 현재 {len(df)}개 분석 가능한 데이터가 있습니다. 최소 {self.seq_len}개 이상 넣어주세요.",
                 "hint": "",
                 "data" : {}
             }
