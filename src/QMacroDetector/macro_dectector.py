@@ -42,22 +42,23 @@ class MacroDetector:
             chunk_size=self.chunk_size,
             offset=int(self.chunk_size * 1.5)
         )
-        
-        df_filter_chunk = df[self.FEATURES].copy()
-        
-        chunks_scaled_array = self.scaler.transform(df_filter_chunk)
-        
-        chunks_scaled_df = pd.DataFrame(chunks_scaled_array, columns=self.FEATURES)
-        
-        chunks_scaled_df = chunks_scaled_df * 10 # train이랑 동일 하게
 
-        if len(chunks_scaled_df) < self.seq_len:
+        if len(df) < self.seq_len:
             return {
                 "status": "1",
                 "message": f"데이터가 부족합니다. 현재 {len(chunks_scaled_df)}개 분석 가능한 데이터가 있습니다. 최소 {self.seq_len}개 이상 넣어주세요.",
                 "hint": "",
                 "data" : {}
             }
+                
+        df_filter_chunk = df[self.FEATURES].copy()
+                
+        chunks_scaled_array = self.scaler.transform(df_filter_chunk)
+        
+        chunks_scaled_df = pd.DataFrame(chunks_scaled_array, columns=self.FEATURES)
+        
+        chunks_scaled_df = chunks_scaled_df * 10 # train이랑 동일 하게
+
         
         final_input:np.array = make_seq(data=chunks_scaled_df, seq_len=self.seq_len, stride=1)
 
