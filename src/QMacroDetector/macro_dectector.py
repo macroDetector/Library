@@ -15,8 +15,6 @@ class MacroDetector:
         self.tolerance = cfg.get("tolerance", 0.02)
         self.chunk_size = cfg.get("chunk_size", 50)
 
-        self.allowable_add_data = self.seq_len + self.chunk_size + 10 # offset 수준
-
         self.FEATURES = FEATURES
 
         self.filter_tolerance = self.tolerance * 100
@@ -39,7 +37,11 @@ class MacroDetector:
     
         df = df[df["deltatime"] <= self.filter_tolerance].reset_index(drop=True)
         
-        df = indicators_generation(df, window_size=self.chunk_size)
+        df = indicators_generation(
+            df_chunk=df, 
+            chunk_size=self.chunk_size,
+            offset=int(self.chunk_size * 1.5)
+        )
         
         df_filter_chunk = df[self.FEATURES].copy()
         
@@ -50,7 +52,11 @@ class MacroDetector:
         chunks_scaled_df = chunks_scaled_df * 10 # train이랑 동일 하게
 
         if len(chunks_scaled_df) < self.seq_len:
-            return None
+            return {
+                "status": "1",
+                "message": f"데이터가 부족합니다. 현재 {len(chunks_scaled_df)}개 분석 가능한 데이터가 있습니다. 최소 {self.seq_len}개 이상 넣어주세요.",
+                "hint": {}
+            }
         
         final_input:np.array = make_seq(data=chunks_scaled_df, seq_len=self.seq_len, stride=1)
 
@@ -74,4 +80,7 @@ class MacroDetector:
                 "error_pct": _error, 
             })
         
-        return send_data
+        return {
+            "status": "0",
+            "data" : send_data
+        }

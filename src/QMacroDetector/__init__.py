@@ -66,17 +66,7 @@ class Pattern_Game:
         self.detector.buffer = deque(maxlen=int(len(receive_data_list)))
 
         try:
-            all_data = []
-            result = {}        
-            if len(receive_data_list) < self.detector.allowable_add_data:
-                return {
-                    "status": "1",
-                    "message": f"데이터가 부족합니다. 현재 {len(receive_data_list)}개 보냈습니다. 최소 {self.detector.allowable_add_data}개 이상 넣어주세요.",
-                    "hint": {}
-                }
-            
             for data in receive_data_list:
-
                 p_data = {
                     'timestamp': data.timestamp,
                     'x': data.x,
@@ -86,12 +76,8 @@ class Pattern_Game:
                 
                 self.detector.push(p_data)
 
-            all_data = self.detector._infer()
+            result = self.detector._infer()
 
-            result = {
-                "status": "0",
-                "data" : all_data
-            }
             self.detector.buffer.clear()
 
             return result
