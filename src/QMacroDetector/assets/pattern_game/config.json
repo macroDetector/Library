@@ -2,7 +2,7 @@
     "SEQ_LEN": 100,
     "STRIDE": 50,
     "JsonPath": "./",
-    "threshold": 1.2674169540405273,
+    "threshold": 3.9793009757995605,
     "d_model": 256,
     "num_layers": 4,
     "dropout": 0.3,
@@ -15,6 +15,6 @@
     "weight_decay": 0.005,
     "dim_feedforward": 512,
     "weight_threshold": 1.0,
-    "improvement_val_loss_cut": 0.97,
+    "improvement_val_loss_cut": 0.995,
     "chunk_size": 100
 }
