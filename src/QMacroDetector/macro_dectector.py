@@ -37,7 +37,7 @@ class MacroDetector:
     
         df = df[df["deltatime"] <= self.filter_tolerance].reset_index(drop=True)
         
-        offset = self.chunk_size
+        offset = self.chunk_size + 10
 
         total_len = self.seq_len + self.chunk_size + offset + 5
 
@@ -73,7 +73,7 @@ class MacroDetector:
             with torch.no_grad():
                 output = self.model(last_seq)
 
-                sample_errors = Loss_Calculation(outputs=output, batch=last_seq).item()
+                sample_errors = Loss_Calculation(outputs=output, batch=last_seq).mean().item()
 
             _error = sample_errors / self.base_threshold
                     
