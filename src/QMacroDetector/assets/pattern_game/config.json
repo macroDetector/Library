@@ -1,8 +1,8 @@
 {
-    "SEQ_LEN": 50,
-    "STRIDE": 25,
+    "SEQ_LEN": 30,
+    "STRIDE": 15,
     "JsonPath": "./",
-    "threshold": 0.1637548804283142,
+    "threshold": 0.056186236441135406,
     "d_model": 512,
     "num_layers": 5,
     "dropout": 0.3,
@@ -16,5 +16,5 @@
     "dim_feedforward": 512,
     "weight_threshold": 1.3,
     "improvement_val_loss_cut": 0.98,
-    "chunk_size": 100
+    "chunk_size": 70
 }
