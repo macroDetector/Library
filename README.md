@@ -6,7 +6,7 @@ pip uninstall QMacroDetector
 
 ---
 
-# 0.2.0 update
+# 0.2.1 update
 안정화
 
 ## Class
