@@ -37,9 +37,9 @@ class MacroDetector:
     
         df = df[df["deltatime"] <= self.filter_tolerance].reset_index(drop=True)
         
-        offset = self.chunk_size + 10
+        offset = self.chunk_size
 
-        total_len = self.seq_len + self.chunk_size + offset + 10
+        total_len = self.seq_len + self.chunk_size + offset + 5
 
         if len(df) < total_len:
             return {

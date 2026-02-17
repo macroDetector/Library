@@ -6,6 +6,10 @@ pip uninstall QMacroDetector
 
 ---
 
+# 0.1.8
+* **경량화 버전** : 최소 필요 마우스 포인터 갯수 106개
+* **매크로 타겟 도메인으로 변경**
+
 ## Class
 Pattern_Game : 보안용 마우스 좌표 측정 매크로 탐지
 ![Pattern_Game](./public/pattern_game.png)
@@ -25,3 +29,5 @@ def get_mouse_pointer(data: List[MousePoint]):
     
     print(received_data)
 ```
+
+#
