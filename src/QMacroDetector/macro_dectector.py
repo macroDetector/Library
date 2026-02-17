@@ -39,7 +39,7 @@ class MacroDetector:
         
         offset = self.chunk_size + 10
 
-        total_len = (self.seq_len + self.chunk_size + offset) + 50
+        total_len = self.seq_len + self.chunk_size + offset + 10
 
         if len(df) < total_len:
             return {
