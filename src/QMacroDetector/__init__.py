@@ -14,32 +14,28 @@ from QMacroDetector.Response import ResponseBody
 
 class Pattern_Game:
     def __init__(self):
-        print(f"version 0.2.2")
+        print(f"version 0.2.3")
         BASE_DIR = os.path.dirname(os.path.abspath(__file__))
         CONFIG_PATH = os.path.join(BASE_DIR, "assets", "pattern_game", "config.json")
         DEFAULT_MODEL_PATH = os.path.join(BASE_DIR, "assets", "pattern_game", "model.pt")
         DEFAULT_SCALER_PATH = os.path.join(BASE_DIR, "assets", "pattern_game", "scaler.pkl")
 
+
         self.cfg:dict = {}
         with open(CONFIG_PATH, 'r') as f:
             self.cfg:dict = json.load(f)
 
-
+        print(f"seq_len : {self.cfg.get('SEQ_LEN', 50)}")
+        print(f"tolerance : {self.cfg.get('tolerance', 0.02)}")
+        print(f"chunk_size : {self.cfg.get('chunk_size', 50)}")
+        print(f"threshold : {self.cfg.get('threshold', 0.5)}")
+        print(f"device : {'cuda' if torch.cuda.is_available() else 'cpu'}")
+        
         FEATURES = [
-            # 평균, 표준 편차 => 그래프 형상
-            "speed_mean", "speed_std", 
-            "acc_mean", "acc_std", 
-            "micro_shake_mean", "micro_shake_std", 
-            "angle_vel_mean", "angle_vel_std",
-            "straightness_mean", "straightness_std",
-
-            # 왜곡, 거칠기 => 그래프의 비대칭성 및 불규칙성
-            "speed_skew", "acc_skew", "micro_shake_skew", "angle_vel_skew",
-            "speed_rough", "acc_rough", "micro_shake_rough", "angle_vel_rough",
-            "straightness_skew", "straightness_rough",
-
-            # 기록기 검거 지표 (무질서도 및 고유값 비율)
-            "path_sinuosity", "bending_energy",
+        "speed_skew", "acc_skew", "micro_shake_skew", "angle_vel_skew", "straightness_skew",
+        "speed_rough", "acc_rough", "micro_shake_rough", "angle_vel_rough", "straightness_rough",
+        "speed_tail", "acc_tail", "micro_shake_tail", "angle_vel_tail", "straightness_tail",
+        "path_sinuosity", "bending_energy",
         ]
 
         self.device = "cuda" if torch.cuda.is_available() else "cpu"

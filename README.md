@@ -5,6 +5,8 @@ pip install git+https://github.com/qqqqaqaqaqq/mouseMacroLibrary.git
 pip uninstall QMacroDetector
 
 ---
+# 0.2.3 update
+안정화, 필요 갯수 감소 최소 110 안정적으로는 130~
 
 # 0.2.2 update
 안정화

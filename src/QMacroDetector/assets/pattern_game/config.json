@@ -1,13 +1,13 @@
 {
-    "SEQ_LEN": 100,
-    "STRIDE": 50,
+    "SEQ_LEN": 30,
+    "STRIDE": 5,
     "JsonPath": "./",
-    "threshold": 3.9793009757995605,
+    "threshold": 0.3792472779750824,
     "d_model": 256,
-    "num_layers": 4,
+    "num_layers": 3,
     "dropout": 0.3,
     "batch_size": 512,
-    "lr": 5e-05,
+    "lr": 0.0001,
     "tolerance": 0.001,
     "n_head": 8,
     "epoch": 1000,
@@ -15,6 +15,6 @@
     "weight_decay": 0.005,
     "dim_feedforward": 512,
     "weight_threshold": 1.0,
-    "improvement_val_loss_cut": 0.995,
-    "chunk_size": 100
+    "improvement_val_loss_cut": 0.93,
+    "chunk_size": 30
 }

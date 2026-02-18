@@ -11,14 +11,13 @@ from QMacroDetector.loss_caculation import Loss_Calculation
 
 class MacroDetector:
     def __init__(self, cfg:dict, model, scaler, FEATURES, device):
-        self.seq_len = cfg.get("seq_len", 50)
+        self.seq_len = cfg.get("SEQ_LEN", 50)
         self.tolerance = cfg.get("tolerance", 0.02)
         self.chunk_size = cfg.get("chunk_size", 50)
 
         self.FEATURES = FEATURES
 
-        self.filter_tolerance = self.tolerance * 100
-        self.weight_threshold = cfg["weight_threshold"]
+        self.filter_tolerance = self.tolerance * 50
 
         self.base_threshold = cfg['threshold']
 
@@ -37,9 +36,9 @@ class MacroDetector:
     
         df = df[df["deltatime"] <= self.filter_tolerance].reset_index(drop=True)
         
-        offset = self.chunk_size + 10
+        offset = 0
 
-        total_len = self.seq_len + self.chunk_size + offset + 5
+        total_len = self.seq_len + self.chunk_size + offset
 
         if len(df) < total_len:
             return {
@@ -79,9 +78,6 @@ class MacroDetector:
                     
             send_data.append(_error)
         
-        # 안전하게 앞 50개 삭제
-        send_data = send_data[50:]
-
         return {
             "status": "0",
             "message": "success",
