@@ -2,7 +2,7 @@
     "SEQ_LEN": 30,
     "STRIDE": 5,
     "JsonPath": "./",
-    "threshold": 0.2626311480998993,
+    "threshold": 0.1314137876033783,
     "d_model": 128,
     "num_layers": 3,
     "dropout": 0.3,

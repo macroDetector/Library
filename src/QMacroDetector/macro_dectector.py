@@ -17,7 +17,7 @@ class MacroDetector:
 
         self.FEATURES = FEATURES
 
-        self.filter_tolerance = self.tolerance * 50
+        self.filter_tolerance = self.tolerance * 2000
 
         self.base_threshold = cfg['threshold']
 

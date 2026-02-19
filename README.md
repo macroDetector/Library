@@ -9,6 +9,9 @@ pip uninstall QMacroDetector
 http://136.119.234.87
 
 ---
+## 0.2.5 update
+* **여유값** : 2초로 확장 => 확장 됨에 따라 에러율 70퍼아래가 안정적 90퍼 대 매크로 의심라인
+
 ## 0.2.4 update
 * drawing 추가
 * 모바일 마우스 패드 지원
