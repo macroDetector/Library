@@ -14,7 +14,7 @@ from QMacroDetector.Response import ResponseBody
 
 class Pattern_Game:
     def __init__(self):
-        print(f"version 0.2.3")
+        print(f"version 0.2.4")
         BASE_DIR = os.path.dirname(os.path.abspath(__file__))
         CONFIG_PATH = os.path.join(BASE_DIR, "assets", "pattern_game", "config.json")
         DEFAULT_MODEL_PATH = os.path.join(BASE_DIR, "assets", "pattern_game", "model.pt")
@@ -32,10 +32,17 @@ class Pattern_Game:
         print(f"device : {'cuda' if torch.cuda.is_available() else 'cpu'}")
         
         FEATURES = [
-        "speed_skew", "acc_skew", "micro_shake_skew", "angle_vel_skew", "straightness_skew",
-        "speed_rough", "acc_rough", "micro_shake_rough", "angle_vel_rough", "straightness_rough",
-        "speed_tail", "acc_tail", "micro_shake_tail", "angle_vel_tail", "straightness_tail",
-        "path_sinuosity", "bending_energy",
+            "speed_skew", "acc_skew", "micro_shake_skew", "angle_vel_skew", "straightness_skew",
+            "speed_rough", "acc_rough", "micro_shake_rough", "angle_vel_rough", "straightness_rough",
+            "speed_tail", "acc_tail", "micro_shake_tail", "angle_vel_tail", "straightness_tail",
+            "path_sinuosity", "bending_energy",
+
+            # 🔥 NEW — macro detection
+            "linear_ratio", "max_linear_run", "linear_run_mean",
+            "curvature_std",
+            "jerk_energy", "jerk_std",
+            "submovement_count",
+            "dt_std"
         ]
 
         self.device = "cuda" if torch.cuda.is_available() else "cpu"

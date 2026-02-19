@@ -9,6 +9,11 @@ pip uninstall QMacroDetector
 http://136.119.234.87
 
 ---
+## 0.2.4 update
+* drawing 추가
+* 모바일 마우스 패드 지원
+* **지표추가** : 기록기 탐지 강화
+
 ## 0.2.3 update
 안정화, 필요 갯수 감소 최소 110 안정적으로는 130~
 
