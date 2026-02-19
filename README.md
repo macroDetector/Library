@@ -1,5 +1,5 @@
 ## install
-pip install git+https://github.com/qqqqaqaqaqq/mouseMacroLibrary.git
+pip install git+https://github.com/macroDetector/Library.git
 
 ## uninstall
 pip uninstall QMacroDetector
