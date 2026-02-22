@@ -14,7 +14,7 @@ from QMacroDetector.Response import ResponseBody
 
 class Pattern_Game:
     def __init__(self):
-        print(f"version 0.2.5")
+        print(f"version 0.2.6")
         BASE_DIR = os.path.dirname(os.path.abspath(__file__))
         CONFIG_PATH = os.path.join(BASE_DIR, "assets", "pattern_game", "config.json")
         DEFAULT_MODEL_PATH = os.path.join(BASE_DIR, "assets", "pattern_game", "model.pt")
@@ -31,7 +31,7 @@ class Pattern_Game:
         print(f"threshold : {self.cfg.get('threshold', 0.5)}")
         print(f"device : {'cuda' if torch.cuda.is_available() else 'cpu'}")
         
-        FEATURES = [
+        self.FEATURES = [
             "speed_skew", "acc_skew", "micro_shake_skew", "angle_vel_skew", "straightness_skew",
             "speed_rough", "acc_rough", "micro_shake_rough", "angle_vel_rough", "straightness_rough",
             "speed_tail", "acc_tail", "micro_shake_tail", "angle_vel_tail", "straightness_tail",
@@ -46,7 +46,7 @@ class Pattern_Game:
         ]
 
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
-        self.input_size = len(FEATURES)
+        self.input_size = len(self.FEATURES)
         
         # ===== 모델 초기화 =====
         self.model = TransformerMacroAutoencoder(
@@ -60,14 +60,13 @@ class Pattern_Game:
 
         self.model.load_state_dict(torch.load(DEFAULT_MODEL_PATH, map_location=self.device, weights_only=True))
         self.model.eval()
-        self.scaler:RobustScaler = joblib.load(DEFAULT_SCALER_PATH)
-
-        self.detector = MacroDetector(cfg=self.cfg, model=self.model, scaler=self.scaler, FEATURES=FEATURES, device=self.device)        
+        self.scaler:RobustScaler = joblib.load(DEFAULT_SCALER_PATH)      
 
     def get_macro_result(self, receive_data_list: List[MousePoint]):
         print(f"송신받은 데이터 개수 {len(receive_data_list)}")
 
-        self.detector.buffer = deque(maxlen=int(len(receive_data_list)))
+        detector = MacroDetector(cfg=self.cfg, model=self.model, scaler=self.scaler, FEATURES=self.FEATURES, device=self.device)
+        detector.buffer = deque(maxlen=int(len(receive_data_list)))
 
         for data in receive_data_list:
             p_data = {
@@ -77,12 +76,12 @@ class Pattern_Game:
                 'deltatime': data.deltatime
             }
             
-            self.detector.push(p_data)
+            detector.push(p_data)
 
         try:
-            result = self.detector._infer()
+            result = detector._infer()
         finally:
-            self.detector.buffer.clear()
+            detector.buffer.clear()
 
         send_data = ResponseBody(**result)
 
